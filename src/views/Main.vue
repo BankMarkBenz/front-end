@@ -1,17 +1,13 @@
 <template>
     <div class="mainlist font-custom">
-        <h1>New Arrivals</h1>
-        <div class="grid md:grid-cols-5 md:gap-10 mx-10 ">
-            <div><p>BABABAB</p>
-                <p>$199</p>
-            <button><img src="../assets/icon/color-pencil.png" width="40" height="40"></button>
-            <button><img src="../assets/icon/trash.png" width="45" height="45"></button>
+        <h1 class="text-4xl border-b-2 border-black p-2">New Arrivals</h1>
+        <div class="grid md:grid-cols-5 md:gap-10 m-10 ">
+            <div  v-for="item in info"  :key="item.id">
+                <p @click="deleteRoom($event)">{{ item.UserName }}</p>
+                <p>{{ item.Status}}</p>
+            <button ><img src="../assets/icon/color-pencil.png" width="40" height="40"></button>
+            <button @click="deleteRoom(item.id)"><img src="../assets/icon/trash.png" width="45" height="45"></button>
             </div>
-            <img src="../assets/logo.png">
-            <img src="../assets/logo.png">
-            <img src="../assets/logo.png">
-            <img src="../assets/logo.png">
-            <img src="../assets/logo.png">
         </div>
 
     </div>
@@ -26,16 +22,23 @@ export default {
         }
     },
   name: 'Main',
+
   methods:{
-      async erqw(){
-        await  axios.get('http://localhost:5000/posts')
-      .then(response => (this.info = response))
-       console.log("kuy")
+        async deleteRoom(id){
+            console.log(id)
+            await axios.delete(`http://localhost:5000/UserAccount/${id}`);
+
+            this.info = this.info.filter( info => info.id !== id );
         }
   },
-       async wtf(){
-           await this.erqw()
-       } 
+  async created() {
+    try {
+      const response = await axios.get(`http://localhost:5000/UserAccount`)
+      this.info = response.data
+    } catch (e) {
+        console.log(e)
+    }
+  }
 }
 
 </script>

@@ -1,19 +1,81 @@
 {
-  "posts": [
+  "UserAccount": [
     {
-      "id": 1,
-      "title": "json-server",
-      "author": "typicode"
-    }
-  ],
-  "comments": [
+      "UserName": "Kuyrai",
+      "Password": "dddsdas",
+      "Privilege": "Teacher",
+      "Status": "Offline",
+      "id": 7
+    },
     {
-      "id": 1,
-      "body": "some comment",
-      "postId": 1
+      "UserName": "dsadas",
+      "Password": "dasdsad",
+      "Privilege": "Teacher",
+      "Status": "Offline",
+      "id": 8
+    },
+    {
+      "UserName": "FuckyouStupid",
+      "Password": "sadad",
+      "Privilege": "Staff",
+      "Status": "Lock",
+      "id": 10
+    },
+    {
+      "UserName": "markeiei111",
+      "Password": "eeeqwe213",
+      "Privilege": "Student",
+      "Status": "Offline",
+      "id": 11
+    },
+    {
+      "UserName": "dsadas",
+      "Password": "dasda",
+      "Privilege": "Teacher",
+      "Status": "Online",
+      "id": 12
+    },
+    {
+      "UserName": "dsadasd",
+      "Password": "asdasd",
+      "Privilege": "Teacher",
+      "Status": "Offline",
+      "id": 13
+    },
+    {
+      "UserName": "cxzczxcz",
+      "Password": "czxc",
+      "Privilege": "Staff",
+      "Status": "Offline",
+      "id": 14
+    },
+    {
+      "UserName": "qqqqq",
+      "Password": "qqqq",
+      "Privilege": "Student",
+      "Status": "Offline",
+      "id": 15
+    },
+    {
+      "UserName": "dddsad",
+      "Password": "asdsada",
+      "Privilege": "Student",
+      "Status": "Offline",
+      "id": 16
+    },
+    {
+      "UserName": "zzzzzzz",
+      "Password": "zzzzz",
+      "Privilege": "Teacher",
+      "Status": "Offline",
+      "id": 17
+    },
+    {
+      "UserName": "dsadas",
+      "Password": "dsad",
+      "Privilege": "Teacher",
+      "Status": "Online",
+      "id": 18
     }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  ]
 }
