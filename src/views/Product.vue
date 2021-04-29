@@ -2,20 +2,21 @@
     <div class="add">
         <div class="grid md:grid-cols-6 md:gap-10 m-10 mt-20 font-custom justify-items-stretch">
             <div class="img col-span-3  ">
-                <img src="../assets/Picture.png" width="400" height="700" class="mx-auto" />
+                <img src="../assets/Picture.png" width="400" height="700" class="mx-auto shadow-lg" />
             </div>
             <div class="col-span-2 text-left">
                 <p class="text-4xl">{{ product.productName }}</p>
                 <p class="text-lg text-gray-500">{{ productBrand.brandName }}</p>
                 <p class="text-3xl">$ {{ product.productPrice }}</p>
-                <p class="text-2xl py-4 border-black border-b-2">สี</p>
+                <p class="text-2xl py-4 border-black border-b-2">Color</p>
                 <ul v-for="color in product.productColors" :key="color.colorId" class="inline-block">
-                    <div class="p-2">
+                    <div class="p-2 pt-6">
                          <p class="rounded-full h-24 w-24 dot " :style="{ 'background-color': color.colorValue}"></p>
-                         <p class="text-center">{{ color.colorName }}</p>
+                         <p class="text-center text-base">{{ color.colorName }}</p>
                     </div>
-                   
                 </ul>
+                <p class="text-2xl py-4 border-black border-b-2">Description</p>
+                <p class="p-2 pt-6">{{ product.productDescription}} </p>
             </div>
         </div>
     </div>
