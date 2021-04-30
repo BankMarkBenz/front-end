@@ -37,9 +37,9 @@ export default {
     name:'Product',
     props: {
     getproductId: {
-      type: Number,
+      type: String,
       required: false,
-      default: null
+      default: ''
     },
     },
     data(){
@@ -54,8 +54,11 @@ export default {
   async created() {
     try {
       const response = await axios.get(`http://localhost:8081/api/products/all`)
-      this.product = response.data[0]
-      this.productBrand = this.product.productBrands
+      const responseBrand = await axios.get(`http://localhost:8081/api/brands`)
+      const BrandRawData = responseBrand.data
+      const productRawData = response.data
+      this.product = productRawData.filter( productIds => productIds.productId == this.productId )[0]
+      this.productBrand = BrandRawData.filter( productBrands => productBrands.brandId == this.product.brandId )[0]
     } catch (e) {
         console.log(e)
     }
