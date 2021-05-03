@@ -1,8 +1,8 @@
 <template>
     <div class="add">
         <div class="grid md:grid-cols-6 md:gap-10 m-10 mt-20 font-custom justify-items-stretch">
-            <div class="img col-span-3  ">
-                <img src="../assets/Picture.png" width="400" height="700" class="mx-auto shadow-lg" />
+            <div class="img col-span-3 hellowww " >
+                <img :src="ImageP" width="500" height="400" class="mx-auto shadow-lg"/>
             </div>
             <div class="col-span-2 text-left">
                 <p class="text-4xl">{{ product.productName }}</p>
@@ -47,17 +47,32 @@ export default {
             productId: this.getproductId,
             productW:'w',
             product:[],
-            productBrand:[]
+            productBrand:[],
+            selectedFile: null,
+            ImageP:null
         }
 
     }  ,
+    methods:{
+        onFileChanged (event) {
+    this.selectedFile = event.target.files[0]
+  },
+  onUpload() {
+      const formData = new FormData()
+  formData.append('File', this.selectedFile)
+  axios.post('http://localhost:8081/image/add/4', formData)
+  }
+    },
   async created() {
     try {
-      const response = await axios.get(`http://localhost:8081/api/products/all`)
+      const response = await axios.get(`http://localhost:8081/api/products/show/${this.productId}`)
+      const imageresponse = await axios.get(`http://localhost:8081/image/get/id:${this.productId}`, {
+      responseType: 'arraybuffer'}).then(response => new Buffer(response.data, 'binary').toString('base64'))
       const responseBrand = await axios.get(`http://localhost:8081/api/brands`)
       const BrandRawData = responseBrand.data
       const productRawData = response.data
-      this.product = productRawData.filter( productIds => productIds.productId == this.productId )[0]
+      this.ImageP = `data:image/png;base64,${imageresponse}`
+      this.product = productRawData
       this.productBrand = BrandRawData.filter( productBrands => productBrands.brandId == this.product.brandId )[0]
     } catch (e) {
         console.log(e)

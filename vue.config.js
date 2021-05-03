@@ -1,5 +1,5 @@
 module.exports = {
     devServer: {
-      proxy: 'http://bankmarkbenz.xyz/backend'
+      proxy: 'http://bankmarkbenz.xyz/backend/'
     }
   }
