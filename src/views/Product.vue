@@ -66,7 +66,7 @@ export default {
   async created() {
     try {
       const response = await axios.get(`http://localhost:8081/api/products/show/${this.productId}`)
-      const imageresponse = await axios.get(`http://localhost:8081/image/get/id:${this.productId}`, {
+      const imageresponse = await axios.get(`http://localhost:8081/image/get/${this.productId}`, {
       responseType: 'arraybuffer'}).then(response => new Buffer(response.data, 'binary').toString('base64'))
       const responseBrand = await axios.get(`http://localhost:8081/api/brands`)
       const BrandRawData = responseBrand.data
