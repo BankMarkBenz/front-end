@@ -11,7 +11,7 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
   name: {{ .Release.Name }}
-  namespace: {{ .Values.backend.namespace }}
+  namespace: {{ .Values.frontend.namespace }}
 spec:
   rules:
     - host: {{ .Values.ingress.host }}
@@ -19,8 +19,8 @@ spec:
         paths:
           - path: {{ .Values.ingress.path | default "/" }}
             pathType: Prefix
-            backend:
+            frontend:
               service:
                 name: {{ .Release.Name }}
                 port:
-                  number: {{ .Values.backend.port }}
+                  number: {{ .Values.frontend.port }}

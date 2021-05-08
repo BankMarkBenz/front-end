@@ -2,11 +2,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: {{ .Release.Name }}
-  namespace: {{ .Values.backend.namespace }}
+  namespace: {{ .Values.frontend.namespace }}
   labels:
     app: {{ .Release.Name }}
 spec:
-  replicas: {{ .Values.backend.replicas }}
+  replicas: {{ .Values.frontend.replicas }}
   selector:
     matchLabels:
       app: {{ .Release.Name }}
@@ -17,22 +17,22 @@ spec:
     spec:
       containers:
         - name: {{ .Release.Name }}
-          image: {{ .Values.backend.image }}:{{ .Values.backend.tag }}
+          image: {{ .Values.frontend.image }}:{{ .Values.frontend.tag }}
           imagePullPolicy: Always
           ports:
-            - containerPort: {{ .Values.backend.port }}
+            - containerPort: {{ .Values.frontend.port }}
               name: web-port
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: {{ .Values.backend.healthCheckPath }}
-              port: {{ .Values.backend.port }}
-              scheme: HTTP
-          readinessProbe:
-            httpGet:
-              path: {{ .Values.backend.healthCheckPath }}
-              port: {{ .Values.backend.port }}
-              scheme: HTTP
+          # livenessProbe:
+          #   httpGet:
+          #     path: {{ .Values.frontend.healthCheckPath }}
+          #     port: {{ .Values.frontend.port }}
+          #     scheme: HTTP
+          # readinessProbe:
+          #   httpGet:
+          #     path: {{ .Values.frontend.healthCheckPath }}
+          #     port: {{ .Values.frontend.port }}
+          #     scheme: HTTP
           {{- if .Values.extraEnv }}
           env:
           {{- range $key, $value := .Values.extraEnv }}
@@ -41,4 +41,4 @@ spec:
           {{- end }}
           {{- end }}
       imagePullSecrets:
-        - name: {{ .Values.backend.imagePullSecrets }}
+        - name: {{ .Values.frontend.imagePullSecrets }}
