@@ -11,8 +11,8 @@ const routes = [
     component: Main
   },
   {
-    path:'/Add',
-    name:'Add',
+    path:'/AddItem',
+    name:'AddItem',
     component:Add
   },
   {

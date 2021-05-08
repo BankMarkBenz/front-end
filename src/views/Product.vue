@@ -7,7 +7,7 @@
             <div class="col-span-2 text-left">
                 <p class="text-4xl">{{ product.productName }}</p>
                 <p class="text-lg text-gray-500">{{ productBrand.brandName }}</p>
-                <p class="text-3xl">$ {{ product.productPrice }}</p>
+                <p class="text-3xl">$ {{ Number(product.productPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</p>
                 <p class="text-2xl py-4 border-black border-b-2">Color</p>
                 <ul v-for="color in product.productColors" :key="color.colorId" class="inline-block">
                     <div class="p-2 pt-6">
@@ -53,25 +53,13 @@ export default {
         }
 
     }  ,
-    methods:{
-        onFileChanged (event) {
-    this.selectedFile = event.target.files[0]
-  },
-  onUpload() {
-      const formData = new FormData()
-  formData.append('File', this.selectedFile)
-  axios.post('http://localhost:8081/image/add/4', formData)
-  }
-    },
   async created() {
     try {
-      const response = await axios.get(`http://localhost:8081/api/products/show/${this.productId}`)
-      const imageresponse = await axios.get(`http://localhost:8081/image/get/${this.productId}`, {
-      responseType: 'arraybuffer'}).then(response => new Buffer(response.data, 'binary').toString('base64'))
-      const responseBrand = await axios.get(`http://localhost:8081/api/brands`)
+      const response = await axios.get(`http://localhost:8080/api/products/show/${this.productId}`)
+      const responseBrand = await axios.get(`http://localhost:8080/api/brands`)
       const BrandRawData = responseBrand.data
       const productRawData = response.data
-      this.ImageP = `data:image/png;base64,${imageresponse}`
+      this.ImageP = `http://localhost:8080/image/get/${this.productId}`
       this.product = productRawData
       this.productBrand = BrandRawData.filter( productBrands => productBrands.brandId == this.product.brandId )[0]
     } catch (e) {
