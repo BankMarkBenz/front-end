@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - dev
+      - deploy
 jobs:
   build:
     runs-on: ubuntu-20.04
