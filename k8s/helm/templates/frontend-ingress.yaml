@@ -19,7 +19,7 @@ spec:
         paths:
           - path: {{ .Values.ingress.path | default "/" }}
             pathType: Prefix
-            frontend:
+            backend:
               service:
                 name: {{ .Release.Name }}
                 port:
