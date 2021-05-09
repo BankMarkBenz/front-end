@@ -50,7 +50,8 @@ export default {
             ProductArray:[],
             ImageP:null,
             imageTest:[],
-            sortFillter:[]
+            sortFillter:[],
+            hellotest:[]
            
     }},
   name: 'Main',
