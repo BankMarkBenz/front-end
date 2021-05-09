@@ -13,8 +13,10 @@
                 <p class="pt-2">{{ item.productName }}</p>
                 <p>${{ Number(item.productPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</p>
                 </router-link>
-            <button ><img src="../assets/icon/color-pencil.png" width="35" height="35"></button>
-            <button @click="deleteItem(item.productId)"><img src="../assets/icon/trash.png" width="35" height="35"></button>
+                <div class="">
+                    <router-link class="inline-block" :to="{name:'EditItem',params:{ OldproductId:item.productId,putMethodCheck:'true' }}"><img src="../assets/icon/color-pencil.png" width="35" height="35"></router-link>
+                    <button class="inline-block" @click="deleteItem(item.productId)"><img src="../assets/icon/trash.png" width="35" height="35"></button>
+                </div>
             </div>
         </div>
         </Grid>
@@ -30,6 +32,7 @@ export default {
   components: { SortBar, Navibar },
     data(){
         return{
+            baseURL:'http://dev.bankandmark.codes/backend/',
             ProductArray:[],
             ImageP:null,
             imageTest:[],
@@ -42,14 +45,14 @@ export default {
   methods:{
         async deleteItem(id){
             console.log(id)
-            await axios.delete(`http://localhost:8080/api/products/delete/${id}`);
+            await axios.delete(`${this.baseURL}api/products/delete/${id}`);
             this.ProductArray = this.ProductArray.filter( ProductArray => ProductArray.productId !== id );
         },
         async getImage(){
                 this.imageTest =[]
                 const itemmap = this.ProductArray.map((number) => { return number.productId})
                 for (let index = 0; index < itemmap.length; index++) {
-                this.imageTest.push(`http://localhost:8080/image/get/${itemmap[index]}`) 
+                this.imageTest.push(`${this.baseURL}image/get/${itemmap[index]}`) 
                 }
         },
         setSortFillter(path){
@@ -59,7 +62,7 @@ export default {
         },
         async getDataSort(){
             try {
-                const response = await axios.get(`http://localhost:8080/api/products/all?${this.sortFillter}`)
+                const response = await axios.get(`${this.baseURL}api/products/all?${this.sortFillter}`)
                 this.ProductArray = response.data
                 this.getImage()
                 } catch (e) {
@@ -70,7 +73,7 @@ export default {
   ,
   async created() {
     try {
-      const response = await axios.get(`http://localhost:8080/api/products/all?${this.sortFillter}`)
+      const response = await axios.get(`${this.baseURL}api/products/all?${this.sortFillter}`)
       this.ProductArray = response.data
     this.getImage()
     } catch (e) {

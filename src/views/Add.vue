@@ -46,25 +46,63 @@
         </div>
     
     </Grid>
-    <button class="p-4 mb-6 border-green-500 border-2 mx-auto bg-green-500 text-white hover:bg-white hover:text-black " @click="SubmitData">Upload Data</button>
+    <base-button
+        v-if="Oldproduct"
+        :msg="'Update Data'"
+        :bgcolor="'bg-green-500'"
+        :hoverbg="'hover:bg-white'"
+        :color="'text-white'"
+        :hovercolor="'hover:text-black'"
+        :bordercolor="'border-green-500'"
+        :border="'border-2'"
+        @click="SubmitData"
+    ></base-button>
+    <base-button
+        v-else
+        :msg="'Upload Data'"
+        :bgcolor="'bg-green-500'"
+        :hoverbg="'hover:bg-white'"
+        :color="'text-white'"
+        :hovercolor="'hover:text-black'"
+        :bordercolor="'border-green-500'"
+        :border="'border-2'"
+        @click="SubmitData"
+        ></base-button>
         <p @click="checkProductName">TTTTTTESTTTTT</p>
 </template>
 <script>
 import axios from 'axios'
 import Navibar from '../components/Navibar.vue'
+import BaseButton from '../components/BaseButton.vue'
 
 export default {
     name:'AddList',
-    components: {Navibar },
+    components: {Navibar, BaseButton },
+    props:{
+        OldproductId:{
+            type:String,
+            required:false,
+            default:null
+        },
+        putMethodCheck:{
+            type:String,
+            required:false,
+            default:'false'
+        }
+    }
+    ,
     data(){
         return{
-            baseURL:'http://localhost:8080/',
+            baseURL:'http://dev.bankandmark.codes/backend/',
+
 
             imagePreview:null,
             selectedFile: null,
             
             allNameData:'',
             lastProductId:null,
+
+            Oldproduct:null,
 
             productData:{
             productId:'',
@@ -98,6 +136,8 @@ export default {
             this.checkError()
             if(this.errorAlert){
                 alert(this.errorAlert)
+            }else if(this.putMethodCheck == 'true'){
+                this.putMethod()
             }else{
                 this.sendData()
             }
@@ -169,7 +209,7 @@ export default {
         async sendData(){
             this.productData.productId = this.lastProductId+1
             await axios.post(`${this.baseURL}api/products/add`,this.productData)            
-            console.log("Done")
+            console.log("Done send")
             this.sendImage()
             
         },
@@ -179,18 +219,55 @@ export default {
            await axios.post(`${this.baseURL}image/add/${this.productData.productId}`,formData)
            location.reload();
         },
-        resetData(){
-            
+        showOldData(){
+            console.log(this.Oldproduct)
+            console.log(this.putMethodCheck)
         },
         checkProductName(){
+            
           for(let v in this.allNameData){
-              console.log(this.productData.productName +" || "+ this.allNameData[v])
-              if(this.productData.productName.toLowerCase() == this.allNameData[v].toLowerCase()){
-                this.errorValidate.errorName = 'This Product Name is used please use another name'
-                this.errorAlert = this.errorAlert + 'This Product Name is used please use another name \r\n'
+              console.log(this.allNameData[v][1])
+              if(this.productData.productName.toLowerCase() == this.allNameData[v][1].toLowerCase()){
+                  if(this.productData.productId == this.allNameData[v][0]){
+                    this.errorValidate.errorName = ''
+                    this.errorAlert = this.errorAlert + ''
+                  }else{
+                      console.log(this.productData.productName.toLowerCase() +"||" +this.allNameData[v][1].toLowerCase())
+                  this.errorValidate.errorName = 'This Product Name is used please use another name'
+                  this.errorAlert = this.errorAlert + 'This Product Name is used please use another name \r\n'
+                  }
+                console.log("Hello22")
               }
           }
-        }  
+        },
+        async checkEdit(){
+            console.log("hello2")
+            const OldproductResponse = await axios.get(`${this.baseURL}api/products/show/${this.OldproductId}`)
+            this.Oldproduct = OldproductResponse.data
+
+            this.selectedFile = `${this.baseURL}image/get/${this.OldproductId}`
+            this.imagePreview = `${this.baseURL}image/get/${this.OldproductId}`
+
+            console.log(this.selectedFile)
+            console.log(this.imagePreview)
+
+            this.productData = this.Oldproduct
+            console.log(this.productData.productId)
+        },
+        async putMethod(){
+            await axios.put(`${this.baseURL}api/products/add`,this.productData)
+            console.log("Done")
+            if (this.selectedFile != `${this.baseURL}image/get/${this.OldproductId}` ) {
+                this.putImage()
+                console.log("put Image")
+            }
+            console.log("Dont put Image")
+        },
+        async putImage(){
+            const formData = new FormData()
+            formData.append('File', this.selectedFile)
+            await axios.put(`${this.baseURL}image/edit/${this.productData.productId}`,formData)
+        }
     },
   async created() {
     try {
@@ -205,6 +282,13 @@ export default {
 
       const allNameResponse = await axios.get(`${this.baseURL}api/products/getAllName`)
       this.allNameData = allNameResponse.data
+
+        console.log(this.putMethodCheck)
+
+      if(this.putMethodCheck == 'true'){
+          console.log("in")
+          this.checkEdit()
+      }
     } catch (e) {
         console.log(e)
     }

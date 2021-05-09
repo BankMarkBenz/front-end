@@ -13,7 +13,14 @@ const routes = [
   {
     path:'/AddItem',
     name:'AddItem',
-    component:Add
+    component:Add,
+    props:true
+  },
+  {
+    path:'/EditItem/:OldproductId',
+    name:'EditItem',
+    component:Add,
+    props:true
   },
   {
     path:'/About',
