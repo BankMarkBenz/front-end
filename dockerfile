@@ -9,6 +9,6 @@ RUN npm run build
 # production stage
 FROM nginx:stable-alpine as production-stage
 ADD frontend-production.conf /etc/nginx/conf.d/default.conf
-COPY --from=build-stage /app/dist /usr/share/nginx/html/frontend/
+COPY --from=build-stage /app/dist /usr/share/nginx/html
 EXPOSE 80
-# CMD ["nginx", "-g", "daemon off;"]
+CMD ["nginx", "-g", "daemon off;"]
