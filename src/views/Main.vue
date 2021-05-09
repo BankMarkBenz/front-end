@@ -44,23 +44,24 @@ export default {
   components: { SortBar, Navibar, BaseButton },
     data(){
         return{
-            baseURL:'http://localhost:8080/',
+            baseURL:'http://dev.bankandmark.codes/backend/',
             pageOf:0,
             TotalPage:null,
             ProductArray:[],
             ImageP:null,
             imageTest:[],
             sortFillter:[]
-            ,imurl:'http://localhost:8080/image/get/9'
            
     }},
   name: 'Main',
 
   methods:{
         async deleteItem(id){
-            console.log(id)
+            if(confirm("Delete This Item ?")){
             await axios.delete(`${this.baseURL}api/products/delete/${id}`);
             this.ProductArray = this.ProductArray.filter( ProductArray => ProductArray.productId !== id );
+            location.reload()
+            }
         },
         async getImage(){
                 this.imageTest =[]

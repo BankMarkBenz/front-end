@@ -56,7 +56,7 @@
         :bordercolor="'border-green-500'"
         :border="'border-2'"
         :padding="'p-4'"
-        @click="SubmitData"
+        @click="putDataMethod"
     ></base-button>
     <base-button
         v-else
@@ -70,7 +70,6 @@
         :padding="'p-4'"
         @click="SubmitData"
         ></base-button>
-        <p @click="checkProductName">TTTTTTESTTTTT</p>
 </template>
 <script>
 import axios from 'axios'
@@ -138,13 +137,18 @@ export default {
             this.checkError()
             if(this.errorAlert){
                 alert(this.errorAlert)
-            }else if(this.putMethodCheck == 'true'){
-                this.putMethod()
             }else{
                 this.sendData()
             }
-            
-
+        },
+        UpdateData(){
+        this.resetError()
+        this.checkError()
+        if(this.errorAlert){
+                alert(this.errorAlert)
+        }else{
+            this.putDataMethod()
+        }
         },
         checkError(){
             this.checkProductName()
@@ -256,21 +260,26 @@ export default {
             this.productData = this.Oldproduct
             console.log(this.productData.productId)
         },
-        async putMethod(){
-            await axios.put(`${this.baseURL}api/products/add`,this.productData)
+        async putDataMethod(){
+
+            await axios.put(`${this.baseURL}api/products/edit/${this.productData.productId}`,this.productData)
             console.log("Done")
             if (this.selectedFile != `${this.baseURL}image/get/${this.OldproductId}` ) {
                 this.putImage()
                 console.log("put Image")
+            }else{
+                console.log("Dont put Image")
             }
-            console.log("Dont put Image")
         },
         async putImage(){
             const formData = new FormData()
             formData.append('File', this.selectedFile)
+            console.log(formData)
+            console.log(this.selectedFile)
             await axios.put(`${this.baseURL}image/edit/${this.productData.productId}`,formData)
+            location.reload()
         }
-    },
+},
   async created() {
     try {
       const Brandresponse = await axios.get(`${this.baseURL}api/brands`)
