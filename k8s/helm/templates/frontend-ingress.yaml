@@ -17,14 +17,14 @@ spec:
     - host: {{ .Values.ingress.host }}
       http:
         paths:
-          # - path: {{ .Values.ingress.path | default "/" }}
-          #   pathType: Prefix
-          backend:
-            service:
-              name: {{ .Release.Name }}
-              port:
-                number: {{ .Values.frontend.port }}
-        # - path: "/js(/|$)(.*)"
+          - path: {{ .Values.ingress.path | default "/" }}
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Release.Name }}
+                port:
+                  number: {{ .Values.frontend.port }}
+          # - path: "/js(/|$)(.*)"
           #   pathType: Prefix
           #   backend:
           #     service:
