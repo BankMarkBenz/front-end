@@ -1,0 +1,17 @@
+frontend:
+  namespace: frontend-prd
+  image: ghcr.io/BankMarkBenz/front-end
+  tag: prd
+  replicas: 1
+  imagePullSecrets: registry
+  port: 80
+  healthCheckPath: "/health.html"
+ingress:
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  host: uat.bankandmark.codes
+  path: "/*(/|$)(.*)"
+  serviceType: ClusterIP
+extraEnv:
+  COMMIT_SHA: CHANGEME
