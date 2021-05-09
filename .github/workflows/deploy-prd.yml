@@ -1,0 +1,36 @@
+name: deploy-prd
+on:
+  workflow_dispatch:
+    inputs:
+      deploy-version:
+        description: 'Version to deploy'
+        required: true
+jobs:
+  deploy:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: get-credentials
+        uses: google-github-actions/get-gke-credentials@main
+        with:
+          cluster_name: bankmarkbenz-cluster
+          location: asia-east1-a
+          credentials: ${{ secrets.GKE_CREDENTIALS }}
+      - name: deploy
+        uses: "deliverybot/helm@v1"
+        with:
+          helm: helm3
+          release: frontend-prd-service
+          namespace: frontend-prd
+          chart: k8s/helm
+          value-files: k8s/helm-values/values-frontend-prd.yaml
+          values: |
+            {
+              "frontend": {
+                "tag": "${{ github.event.inputs.deploy-version }}"
+              },
+              "extraEnv": {
+                "COMMIT_SHA": "${{ github.sha }}"
+              }
+            }
