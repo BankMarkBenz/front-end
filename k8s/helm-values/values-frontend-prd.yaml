@@ -10,8 +10,8 @@ ingress:
   annotations:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/rewrite-target: /$2
-  host: bankandmark.codes
-  path: "/frontend(/|$)(.*)"
+  host: uat.bankandmark.codes
+  path: "/*(/|$)(.*)"
   serviceType: ClusterIP
 extraEnv:
   COMMIT_SHA: CHANGEME
