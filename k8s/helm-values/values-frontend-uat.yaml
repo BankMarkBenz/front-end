@@ -1,6 +1,6 @@
 frontend:
   namespace: frontend-uat
-  image: ghcr.io/BankMarkBenz/front-end
+  image: ghcr.io/bankmarkbenz/front-end
   tag: uat
   replicas: 1
   imagePullSecrets: registry
