@@ -5,6 +5,17 @@
         <Grid>
             <div class="col-start-2 col-span-4 md:col-start-1 md:col-auto">
             <SortBar @sort-page="setSortFillter"></SortBar>
+            <base-button  v-for="index in TotalPage" :key="index"
+                    :msg="index"
+                    :bgcolor="'bg-while'"
+                    :hoverbg="'hover:bg-black'"
+                    :color="'text-black'"
+                    :hovercolor="'hover:text-white'"
+                    :bordercolor="'border-black'"
+                    :border="'border-1'"
+                    :padding="'p-3'"
+                    @click="setPage(index-1)"
+            ></base-button>
             </div>
             <div class="md:text-base grid md:grid-cols-4 col-span-4 col-start-2 md:gap-10">
             <div class="py-1" v-for="(item,index) in ProductArray"  :key="item.productId">
@@ -25,14 +36,17 @@
 </template>
 
 <script>
+import BaseButton from '../components/BaseButton.vue';
 import Navibar from '../components/Navibar.vue';
 const axios = require("axios");
 import SortBar from '../components/SortBar.vue';
 export default {
-  components: { SortBar, Navibar },
+  components: { SortBar, Navibar, BaseButton },
     data(){
         return{
-            baseURL:'http://dev.bankandmark.codes/backend/',
+            baseURL:'http://localhost:8080/',
+            pageOf:0,
+            TotalPage:null,
             ProductArray:[],
             ImageP:null,
             imageTest:[],
@@ -56,25 +70,34 @@ export default {
                 }
         },
         setSortFillter(path){
+            if(path == 'sortBy=productId'){
+                this.pageOf=0
+            }
             this.sortFillter = path
             this.getDataSort()
             this.getImage()
         },
         async getDataSort(){
             try {
-                const response = await axios.get(`${this.baseURL}api/products/all?${this.sortFillter}`)
-                this.ProductArray = response.data
+                const response = await axios.get(`${this.baseURL}api/products/all?${this.pageOf}&${this.sortFillter}`)
+                this.ProductArray = response.data['content']
                 this.getImage()
                 } catch (e) {
                          console.log(e)
                 }
+        },
+        setPage(page){
+            this.pageOf = `page=${page}`
+            this.getDataSort()
+            this.getImage()
         }
   }
   ,
   async created() {
     try {
       const response = await axios.get(`${this.baseURL}api/products/all?${this.sortFillter}`)
-      this.ProductArray = response.data
+      this.ProductArray = response.data['content']
+      this.TotalPage = response.data['totalPages']
     this.getImage()
     } catch (e) {
         console.log(e)

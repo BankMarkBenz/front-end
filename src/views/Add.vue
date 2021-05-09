@@ -55,6 +55,7 @@
         :hovercolor="'hover:text-black'"
         :bordercolor="'border-green-500'"
         :border="'border-2'"
+        :padding="'p-4'"
         @click="SubmitData"
     ></base-button>
     <base-button
@@ -66,6 +67,7 @@
         :hovercolor="'hover:text-black'"
         :bordercolor="'border-green-500'"
         :border="'border-2'"
+        :padding="'p-4'"
         @click="SubmitData"
         ></base-button>
         <p @click="checkProductName">TTTTTTESTTTTT</p>
