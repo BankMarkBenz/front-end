@@ -1,7 +1,7 @@
 <template>
 <navibar></navibar>
     <div class="mainlist font-custom">
-        <h1 class="text-4xl border-b-2 border-black p-2 pt-6">New Arrivals</h1>
+        <h1 class="text-4xl border-b-2 border-black p-2 pb-10 pt-16">Product List</h1>
         <Grid>
             <div class="col-start-2 col-span-4 md:col-start-1 md:col-auto">
             <SortBar @sort-page="setSortFillter"></SortBar>

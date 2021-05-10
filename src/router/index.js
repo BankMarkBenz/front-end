@@ -3,6 +3,7 @@ import Main from '../views/Main.vue'
 import Add from '../views/Add.vue'
 import About from '../views/About.vue'
 import Product from '../views/Product.vue'
+import Team from '../views/Team.vue'
 
 const routes = [
   {
@@ -32,7 +33,11 @@ const routes = [
     name:'Product',
     component:Product,
     props: true
-
+  },
+  {
+    path:'/Team',
+    name:'Team',
+    component:Team
   }
 ]
 
