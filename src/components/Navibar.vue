@@ -1,7 +1,5 @@
 <template>
 
-    <!-- <div class="font-Italiana border-black border-b-2">
-</div> -->
 <header class="font-Italiana sm:flex sm:justify-between p-2 border-black border-b-2">
 
       <div class="flex items-center justify-between px-4 py-3 sm:p-0">

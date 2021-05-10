@@ -6,7 +6,7 @@
         <div class="col-start-2 col-span-1 md:col-start-1 md:col-span-2 ">
             <p v-if="errorValidate.errorImage" class="text-xl text-red-500">Product Image</p>
             <p v-else class="text-xl ">Product Image</p>
-            <img  v-if="selectedFile" :src="imagePreview" height="400" width="400" class="mx-auto p-5  my-4">
+            <img  v-if="selectedFile" :src="imagePreview" alt="Upload Image" height="400" width="400" class="mx-auto p-5  my-4">
             <img v-else class="mx-auto my-4 h-40 w-40  sm:h-96 sm:w-96" src="../assets/icon/whiteshirt.jpg" alt="Upload Image" height="400" width="400"/>
             <input @change="onFileChanged" class="hidden" id="upload-photo" type="file">
             <label for="upload-photo"  class="cursor-pointer border-green-500 border-2 mx-auto p-4 mt-2 hover:bg-green-500 hover:text-white" >Upload File</label>

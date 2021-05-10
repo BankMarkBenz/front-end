@@ -20,13 +20,13 @@
             <div class="md:text-base grid md:grid-cols-4 col-span-4 col-start-2 md:gap-10">
             <div class="py-1" v-for="(item,index) in ProductArray"  :key="item.productId">
                 <router-link :to="{ name: 'Product', params: { getproductId: item.productId } }">
-                <img :src="imageTest[index]" class="mx-auto shadow-lg sm:w-45 sm:h-45"/>
+                <img alt="ProductImage" :src="imageTest[index]" class="mx-auto shadow-lg sm:w-45 sm:h-45"/>
                 <p class="pt-2">{{ item.productName }}</p>
                 <p>${{ Number(item.productPrice).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2}) }}</p>
                 </router-link>
                 <div class="">
-                    <router-link class="inline-block" :to="{name:'EditItem',params:{ OldproductId:item.productId,putMethodCheck:'true' }}"><img src="../assets/icon/color-pencil.png" width="35" height="35"></router-link>
-                    <button class="inline-block" @click="deleteItem(item.productId)"><img src="../assets/icon/trash.png" width="35" height="35"></button>
+                    <router-link class="inline-block" :to="{name:'EditItem',params:{ OldproductId:item.productId,putMethodCheck:'true' }}"><img src="../assets/icon/color-pencil.png"  alt="EditButton" width="35" height="35"></router-link>
+                    <button class="inline-block" @click="deleteItem(item.productId)"><img src="../assets/icon/trash.png" width="35" height="35" alt="DeleteButton"></button>
                 </div>
             </div>
         </div>
@@ -67,8 +67,8 @@ export default {
         async getImage(){
                 this.imageTest =[]
                 const itemmap = this.ProductArray.map((number) => { return number.productId})
-                for (let index = 0; index < itemmap.length; index++) {
-                this.imageTest.push(`${this.baseURL}image/get/${itemmap[index]}`) 
+                for (let v in itemmap) {
+                this.imageTest.push(`${this.baseURL}image/get/${itemmap[v]}`) 
                 }
         },
         setSortFillter(path){
