@@ -1,8 +1,9 @@
 <template>
+    <navibar></navibar>
     <div class="add">
         <div class="grid md:grid-cols-6 md:gap-10 m-10 mt-20 font-custom justify-items-stretch">
             <div class="img col-span-3 hellowww " >
-                <img :src="ImageP" width="500" height="400" class="mx-auto shadow-lg"/>
+                <img alt="ProductImage" :src="ImageP" width="500" height="400" class="mx-auto shadow-lg mb-5"/>
             </div>
             <div class="col-span-2 text-left">
                 <p class="text-4xl">{{ product.productName }}</p>
@@ -16,7 +17,8 @@
                     </div>
                 </ul>
                 <p class="text-2xl py-4 border-black border-b-2">Description</p>
-                <p class="p-2 pt-6">{{ product.productDescription}} </p>
+                <p class="p-2 pt-6">Manufactureddate : {{ product.productManufactureddate}}</p>
+                <p class="p-2 pt-2">{{ product.productDescription}} </p>
             </div>
         </div>
     </div>
@@ -32,8 +34,10 @@
 
 </style>
 <script>
+import Navibar from '../components/Navibar.vue';
 const axios = require("axios");
 export default {
+  components: { Navibar },
     name:'Product',
     props: {
     getproductId: {
@@ -44,6 +48,7 @@ export default {
     },
     data(){
         return{
+          baseURL:'https://bankandmark.codes/backend/',
             productId: this.getproductId,
             productW:'w',
             product:[],
@@ -55,11 +60,11 @@ export default {
     }  ,
   async created() {
     try {
-      const response = await axios.get(`http://localhost:8080/api/products/show/${this.productId}`)
-      const responseBrand = await axios.get(`http://localhost:8080/api/brands`)
+      const response = await axios.get(`${this.baseURL}api/products/show/${this.productId}`)
+      const responseBrand = await axios.get(`${this.baseURL}api/brands`)
       const BrandRawData = responseBrand.data
       const productRawData = response.data
-      this.ImageP = `http://localhost:8080/image/get/${this.productId}`
+      this.ImageP = `${this.baseURL}image/get/${this.productId}`
       this.product = productRawData
       this.productBrand = BrandRawData.filter( productBrands => productBrands.brandId == this.product.brandId )[0]
     } catch (e) {

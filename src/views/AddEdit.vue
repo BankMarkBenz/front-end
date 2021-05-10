@@ -1,13 +1,15 @@
 <template>
     <navibar></navibar>
+    <h1 v-if="putMethodCheck == 'true'" class="font-custom text-4xl  p-2 pb-10 pt-16">Edit Product</h1>
+    <h1 v-else class="font-custom text-4xl  p-2 pb-10 pt-16">Add Product</h1>
     <Grid>
         <div class="col-start-2 col-span-1 md:col-start-1 md:col-span-2 ">
             <p v-if="errorValidate.errorImage" class="text-xl text-red-500">Product Image</p>
             <p v-else class="text-xl ">Product Image</p>
-            <img  v-if="selectedFile" :src="imagePreview" height="400" width="400" class="mx-auto p-5">
-            <img v-else class="mx-auto h-40 w-40  sm:h-96 sm:w-96" src="../assets/logo.png" alt="Upload Image" height="400" width="400"/>
+            <img  v-if="selectedFile" :src="imagePreview" alt="Upload Image" height="400" width="400" class="mx-auto p-5  my-4">
+            <img v-else class="mx-auto my-4 h-40 w-40  sm:h-96 sm:w-96" src="../assets/icon/whiteshirt.jpg" alt="Upload Image" height="400" width="400"/>
             <input @change="onFileChanged" class="hidden" id="upload-photo" type="file">
-            <label for="upload-photo"  class="cursor-pointer border-green-500 border-2 mx-auto p-4 hover:bg-green-500 hover:text-white" >Upload File</label>
+            <label for="upload-photo"  class="cursor-pointer border-green-500 border-2 mx-auto p-4 mt-2 hover:bg-green-500 hover:text-white" >Upload File</label>
         </div>
         <div class=" items-stretch self-center col-start-2 md:text-base grid-cols-2 grid-rows-18 grid md:grid-cols-3 md:col-start-3 md:col-span-3 md:gap-10 mt-5 md:grid-rows-8 md:m-4">
 
@@ -28,7 +30,7 @@
                 <div class="col-start-1 col-span-2 row-start-6 row-span-4 md:col-start-2 md:col-span-2 md:row-start-3 md:row-span-2" >
                     <div class="p-1 inline-block float-left  col-start-1  md:col-start-2" v-for="color in ColorArray" :key="color.colorId">
                     <input  class="p-1 drop-shadow-lg" type="checkbox" :id="color.colorId" :value="color" v-model="productData.productColors">
-                    <label :style="{ 'color':color.colorValue }" class="p-1 drop-shadow-lg" :for="color">{{ color.colorName }}</label>
+                    <label :id="color.colorName" :style="{ 'color':color.colorValue }" class="p-1 drop-shadow-xl" :for="color">{{ color.colorName }}</label>
                     </div>
                 </div>
                 
@@ -46,25 +48,70 @@
         </div>
     
     </Grid>
-    <button class="p-4 mb-6 border-green-500 border-2 mx-auto bg-green-500 text-white hover:bg-white hover:text-black " @click="SubmitData">Upload Data</button>
-        <p @click="checkProductName">TTTTTTESTTTTT</p>
+    <base-button
+        v-if="Oldproduct"
+        :msg="'Update Data'"
+        :bgcolor="'bg-green-500'"
+        :hoverbg="'hover:bg-white'"
+        :color="'text-white'"
+        :hovercolor="'hover:text-black'"
+        :bordercolor="'border-green-500'"
+        :border="'border-2'"
+        :padding="'p-4'"
+        @click="putDataMethod"
+    ></base-button>
+    <base-button
+        v-else
+        :msg="'Upload Data'"
+        :bgcolor="'bg-green-500'"
+        :hoverbg="'hover:bg-white'"
+        :color="'text-white'"
+        :hovercolor="'hover:text-black'"
+        :bordercolor="'border-green-500'"
+        :border="'border-2'"
+        :padding="'p-4'"
+        @click="SubmitData"
+        ></base-button>
 </template>
+
+<style scoped>
+#Off {
+  text-shadow: 2px 2px #FF0000;
+}
+</style>
 <script>
 import axios from 'axios'
 import Navibar from '../components/Navibar.vue'
+import BaseButton from '../components/BaseButton.vue'
 
 export default {
     name:'AddList',
-    components: {Navibar },
+    components: {Navibar, BaseButton },
+    props:{
+        OldproductId:{
+            type:String,
+            required:false,
+            default:null
+        },
+        putMethodCheck:{
+            type:String,
+            required:false,
+            default:'false'
+        }
+    }
+    ,
     data(){
         return{
-            baseURL:'http://localhost:8080/',
+            baseURL:'https://bankandmark.codes/backend/',
+
 
             imagePreview:null,
             selectedFile: null,
             
             allNameData:'',
             lastProductId:null,
+
+            Oldproduct:null,
 
             productData:{
             productId:'',
@@ -101,8 +148,15 @@ export default {
             }else{
                 this.sendData()
             }
-            
-
+        },
+        UpdateData(){
+        this.resetError()
+        this.checkError()
+        if(this.errorAlert){
+                alert(this.errorAlert)
+        }else{
+            this.putDataMethod()
+        }
         },
         checkError(){
             this.checkProductName()
@@ -159,7 +213,6 @@ export default {
         },
         onFileChanged (event) {
             this.selectedFile = event.target.files[0]
-            console.log(this.selectedFile)
             const input = event.target;
              if (input.files) {
                 var reader = new FileReader();
@@ -169,7 +222,6 @@ export default {
         async sendData(){
             this.productData.productId = this.lastProductId+1
             await axios.post(`${this.baseURL}api/products/add`,this.productData)            
-            console.log("Done")
             this.sendImage()
             
         },
@@ -179,19 +231,49 @@ export default {
            await axios.post(`${this.baseURL}image/add/${this.productData.productId}`,formData)
            location.reload();
         },
-        resetData(){
-            
-        },
         checkProductName(){
+            
           for(let v in this.allNameData){
-              console.log(this.productData.productName +" || "+ this.allNameData[v])
-              if(this.productData.productName.toLowerCase() == this.allNameData[v].toLowerCase()){
-                this.errorValidate.errorName = 'This Product Name is used please use another name'
-                this.errorAlert = this.errorAlert + 'This Product Name is used please use another name \r\n'
+              if(this.productData.productName.toLowerCase() == this.allNameData[v][1].toLowerCase()){
+                  if(this.productData.productId == this.allNameData[v][0]){
+                    this.errorValidate.errorName = ''
+                    this.errorAlert = this.errorAlert + ''
+                  }else{
+                  this.errorValidate.errorName = 'This Product Name is used please use another name'
+                  this.errorAlert = this.errorAlert + 'This Product Name is used please use another name \r\n'
+                  }
               }
           }
-        }  
-    },
+        },
+        async checkEdit(){
+            const OldproductResponse = await axios.get(`${this.baseURL}api/products/show/${this.OldproductId}`)
+            this.Oldproduct = OldproductResponse.data
+
+            this.selectedFile = `${this.baseURL}image/get/${this.OldproductId}`
+            this.imagePreview = `${this.baseURL}image/get/${this.OldproductId}`
+
+            this.productData = this.Oldproduct
+        },
+        async putDataMethod(){
+            this.resetError()
+            this.checkError()
+            if(this.errorAlert){
+                alert(this.errorAlert)
+            }else{
+            await axios.put(`${this.baseURL}api/products/edit/${this.productData.productId}`,this.productData)
+            if (this.selectedFile != `${this.baseURL}image/get/${this.OldproductId}` ) {
+                this.putImage()
+            }else{
+                location.reload()
+            }}
+        },
+        async putImage(){
+            const formData = new FormData()
+            formData.append('File', this.selectedFile)
+            await axios.put(`${this.baseURL}image/edit/${this.productData.productId}`,formData)
+            location.reload()
+        }
+},
   async created() {
     try {
       const Brandresponse = await axios.get(`${this.baseURL}api/brands`)
@@ -205,6 +287,10 @@ export default {
 
       const allNameResponse = await axios.get(`${this.baseURL}api/products/getAllName`)
       this.allNameData = allNameResponse.data
+
+      if(this.putMethodCheck == 'true'){
+          this.checkEdit()
+      }
     } catch (e) {
         console.log(e)
     }

@@ -12,7 +12,7 @@
         <div class="block md:hidden sm:block">
             <p class="  text-2xl">Sort By</p>
             <div class="flex items-end">
-            <select class=" p-0" name="sortValue" id="sort" v-model="selectsortValue"
+            <select class=" p-0" name="sortValue" id="sort"
               @change="sortMethod(selectsortValue)">
                   <option value="ProductName">ProductName</option>
                   <option value="ProductPrice">ProductPrice</option>
