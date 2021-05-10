@@ -255,13 +255,17 @@ export default {
             this.productData = this.Oldproduct
         },
         async putDataMethod(){
-
+            this.resetError()
+            this.checkError()
+            if(this.errorAlert){
+                alert(this.errorAlert)
+            }else{
             await axios.put(`${this.baseURL}api/products/edit/${this.productData.productId}`,this.productData)
             if (this.selectedFile != `${this.baseURL}image/get/${this.OldproductId}` ) {
                 this.putImage()
             }else{
-                console.log("")
-            }
+                location.reload()
+            }}
         },
         async putImage(){
             const formData = new FormData()
