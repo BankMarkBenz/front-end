@@ -10,7 +10,7 @@ module.exports = {
       },
       fontFamily: {
         custom: ['Montserrat', 'sans-serif'],
-        Italiana:['Italiana','serif']
+        Italiana:['Yeseva One','cursive']
       }  }},
   variants: {
     extend: {},

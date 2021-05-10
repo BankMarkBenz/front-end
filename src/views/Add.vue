@@ -1,13 +1,15 @@
 <template>
     <navibar></navibar>
+    <h1 v-if="putMethodCheck == 'true'" class="font-custom text-4xl  p-2 pb-10 pt-16">Edit Product</h1>
+    <h1 v-else class="font-custom text-4xl  p-2 pb-10 pt-16">Add Product</h1>
     <Grid>
         <div class="col-start-2 col-span-1 md:col-start-1 md:col-span-2 ">
             <p v-if="errorValidate.errorImage" class="text-xl text-red-500">Product Image</p>
             <p v-else class="text-xl ">Product Image</p>
-            <img  v-if="selectedFile" :src="imagePreview" height="400" width="400" class="mx-auto p-5">
-            <img v-else class="mx-auto h-40 w-40  sm:h-96 sm:w-96" src="../assets/logo.png" alt="Upload Image" height="400" width="400"/>
+            <img  v-if="selectedFile" :src="imagePreview" height="400" width="400" class="mx-auto p-5  my-4">
+            <img v-else class="mx-auto my-4 h-40 w-40  sm:h-96 sm:w-96" src="../assets/icon/whiteshirt.jpg" alt="Upload Image" height="400" width="400"/>
             <input @change="onFileChanged" class="hidden" id="upload-photo" type="file">
-            <label for="upload-photo"  class="cursor-pointer border-green-500 border-2 mx-auto p-4 hover:bg-green-500 hover:text-white" >Upload File</label>
+            <label for="upload-photo"  class="cursor-pointer border-green-500 border-2 mx-auto p-4 mt-2 hover:bg-green-500 hover:text-white" >Upload File</label>
         </div>
         <div class=" items-stretch self-center col-start-2 md:text-base grid-cols-2 grid-rows-18 grid md:grid-cols-3 md:col-start-3 md:col-span-3 md:gap-10 mt-5 md:grid-rows-8 md:m-4">
 

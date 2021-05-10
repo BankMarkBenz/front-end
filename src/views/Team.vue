@@ -1,7 +1,7 @@
 <template>
     <navibar></navibar>
     <div class="font-custom">
-    <h1 class="text-4xl border-b-2 border-black p-2 pb-10 pt-16">Team</h1>
+    <h1 class="text-4xl  p-2 pb-10 pt-16">Team</h1>
     <grid>
         <div class=" md:col-start-2 my-10">
             <img class="w-50 h-50" src="../assets/patsakorn.jpg">
@@ -14,8 +14,8 @@
         </div>
         <div class="md:col-start-4 my-10 ">
             <img class="w-50 h-50" src="../assets/jakkrapop.jpg">
-            <p class="text-lg">Jakkra pop</p>
-            <p class="text-lg">62130500065</p>
+            <p class="text-lg">Jakkrapop Chivrarerk</p>
+            <p class="text-lg">62130500108</p>
             <div class="">
             <a href="https://www.instagram.com/jakkerpop/"><img class="inline w-10 h-10" src="../assets/instagram.png"></a>
             <a href="https://www.facebook.com/onetwo.onetwo.b"><img class="inline w-10 h-10"  src="../assets/facebook.png"></a>

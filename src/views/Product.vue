@@ -17,7 +17,8 @@
                     </div>
                 </ul>
                 <p class="text-2xl py-4 border-black border-b-2">Description</p>
-                <p class="p-2 pt-6">{{ product.productDescription}} </p>
+                <p class="p-2 pt-6">Manufactureddate : {{ product.productManufactureddate}}</p>
+                <p class="p-2 pt-2">{{ product.productDescription}} </p>
             </div>
         </div>
     </div>
