@@ -3,7 +3,7 @@
     <div class="add">
         <div class="grid md:grid-cols-6 md:gap-10 m-10 mt-20 font-custom justify-items-stretch">
             <div class="img col-span-3 hellowww " >
-                <img :src="ImageP" width="500" height="400" class="mx-auto shadow-lg"/>
+                <img :src="ImageP" width="500" height="400" class="mx-auto shadow-lg mb-5"/>
             </div>
             <div class="col-span-2 text-left">
                 <p class="text-4xl">{{ product.productName }}</p>
