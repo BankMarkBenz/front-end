@@ -30,7 +30,7 @@
                 <div class="col-start-1 col-span-2 row-start-6 row-span-4 md:col-start-2 md:col-span-2 md:row-start-3 md:row-span-2" >
                     <div class="p-1 inline-block float-left  col-start-1  md:col-start-2" v-for="color in ColorArray" :key="color.colorId">
                     <input  class="p-1 drop-shadow-lg" type="checkbox" :id="color.colorId" :value="color" v-model="productData.productColors">
-                    <label :style="{ 'color':color.colorValue }" class="p-1 drop-shadow-lg" :for="color">{{ color.colorName }}</label>
+                    <label :id="color.colorName" :style="{ 'color':color.colorValue }" class="p-1 drop-shadow-xl" :for="color">{{ color.colorName }}</label>
                     </div>
                 </div>
                 
@@ -73,6 +73,12 @@
         @click="SubmitData"
         ></base-button>
 </template>
+
+<style scoped>
+#Off {
+  text-shadow: 2px 2px #FF0000;
+}
+</style>
 <script>
 import axios from 'axios'
 import Navibar from '../components/Navibar.vue'
@@ -207,7 +213,6 @@ export default {
         },
         onFileChanged (event) {
             this.selectedFile = event.target.files[0]
-            console.log(this.selectedFile)
             const input = event.target;
              if (input.files) {
                 var reader = new FileReader();
@@ -217,7 +222,6 @@ export default {
         async sendData(){
             this.productData.productId = this.lastProductId+1
             await axios.post(`${this.baseURL}api/products/add`,this.productData)            
-            console.log("Done send")
             this.sendImage()
             
         },
@@ -227,57 +231,41 @@ export default {
            await axios.post(`${this.baseURL}image/add/${this.productData.productId}`,formData)
            location.reload();
         },
-        showOldData(){
-            console.log(this.Oldproduct)
-            console.log(this.putMethodCheck)
-        },
         checkProductName(){
             
           for(let v in this.allNameData){
-              console.log(this.allNameData[v][1])
               if(this.productData.productName.toLowerCase() == this.allNameData[v][1].toLowerCase()){
                   if(this.productData.productId == this.allNameData[v][0]){
                     this.errorValidate.errorName = ''
                     this.errorAlert = this.errorAlert + ''
                   }else{
-                      console.log(this.productData.productName.toLowerCase() +"||" +this.allNameData[v][1].toLowerCase())
                   this.errorValidate.errorName = 'This Product Name is used please use another name'
                   this.errorAlert = this.errorAlert + 'This Product Name is used please use another name \r\n'
                   }
-                console.log("Hello22")
               }
           }
         },
         async checkEdit(){
-            console.log("hello2")
             const OldproductResponse = await axios.get(`${this.baseURL}api/products/show/${this.OldproductId}`)
             this.Oldproduct = OldproductResponse.data
 
             this.selectedFile = `${this.baseURL}image/get/${this.OldproductId}`
             this.imagePreview = `${this.baseURL}image/get/${this.OldproductId}`
 
-            console.log(this.selectedFile)
-            console.log(this.imagePreview)
-
             this.productData = this.Oldproduct
-            console.log(this.productData.productId)
         },
         async putDataMethod(){
 
             await axios.put(`${this.baseURL}api/products/edit/${this.productData.productId}`,this.productData)
-            console.log("Done")
             if (this.selectedFile != `${this.baseURL}image/get/${this.OldproductId}` ) {
                 this.putImage()
-                console.log("put Image")
             }else{
-                console.log("Dont put Image")
+                console.log("")
             }
         },
         async putImage(){
             const formData = new FormData()
             formData.append('File', this.selectedFile)
-            console.log(formData)
-            console.log(this.selectedFile)
             await axios.put(`${this.baseURL}image/edit/${this.productData.productId}`,formData)
             location.reload()
         }
@@ -296,10 +284,7 @@ export default {
       const allNameResponse = await axios.get(`${this.baseURL}api/products/getAllName`)
       this.allNameData = allNameResponse.data
 
-        console.log(this.putMethodCheck)
-
       if(this.putMethodCheck == 'true'){
-          console.log("in")
           this.checkEdit()
       }
     } catch (e) {
