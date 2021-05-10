@@ -102,7 +102,7 @@ export default {
     ,
     data(){
         return{
-            baseURL:'http://dev.bankandmark.codes/backend/',
+            baseURL:'https://bankandmark.codes/backend/',
 
 
             imagePreview:null,

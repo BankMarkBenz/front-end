@@ -44,7 +44,7 @@ export default {
   components: { SortBar, Navibar, BaseButton },
     data(){
         return{
-            baseURL:'http://dev.bankandmark.codes/backend/',
+            baseURL:'https://bankandmark.codes/backend/',
             pageOf:0,
             TotalPage:null,
             ProductArray:[],

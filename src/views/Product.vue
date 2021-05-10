@@ -48,7 +48,7 @@ export default {
     },
     data(){
         return{
-          baseURL:'http://dev.bankandmark.codes/backend/',
+          baseURL:'https://bankandmark.codes/backend/',
             productId: this.getproductId,
             productW:'w',
             product:[],
